@@ -40,19 +40,18 @@ function setupEventListeners(){
     window.addEventListener('resize', resize)
     volume.addEventListener('input', e =>{
         const value = parseFloat(e.target.value)
-        gainNode.gain.value = value
         gainNode.gain.setTargetAtTime(value, context.currentTime, 0.01)
     })
     bass.addEventListener('input', e =>{
-        const value = parseFloat(e.target.value)
+        const value = parseInt(e.target.value)
         bassEq.gain.setTargetAtTime(value, context.currentTime, 0.01)
     })
     treble.addEventListener('input', e =>{
-        const value = parseFloat(e.target.value)
+        const value = parseInt(e.target.value)
         trebleEq.gain.setTargetAtTime(value, context.currentTime, 0.01)
     })
     middle.addEventListener('input', e =>{
-        const value = parseFloat(e.target.value)
+        const value = parseInt(e.target.value)
         midEq.gain.setTargetAtTime(value, context.currentTime, 0.01)
     })
 }
@@ -71,9 +70,6 @@ async function setupContext(){
     source.connect(context.destination)
 }
 
-function setupAnalyser(){
-    
-}
 function getInstrument(){
     return navigator.mediaDevices.getUserMedia({audio: {
         echoCancellation: false,
@@ -105,6 +101,7 @@ function createVisualizer(){
     })
 
 }
+
 function resize(){
     visualizer.width = visualizer.clientWidth * window.devicePixelRatio
     visualizer.height = visualizer.clientHeight * window.devicePixelRatio
@@ -117,3 +114,27 @@ function resize(){
 // })
 
 // }
+
+//Distortion
+
+// var distortion = (function() {
+//     var node = context.audioWorkletNode(4096, 1, 1);
+//     node.bits = 4; // between 1 and 16
+//     node.normfreq = 0.1; // between 0.0 and 1.0
+//     var step = Math.pow(1/2, node.bits);
+//     var phaser = 0;
+//     var last = 0;
+//     node.onaudioprocess = function(e) {
+//         var input = e.inputBuffer.getChannelData(0);
+//         var output = e.outputBuffer.getChannelData(0);
+//         for (var i = 0; i < 4096; i++) {
+//             phaser += node.normfreq;
+//             if (phaser >= 1.0) {
+//                 phaser -= 1.0;
+//                 last = step * Math.floor(input[i] / step + 0.5);
+//             }
+//             output[i] = last;
+//         }
+//     };
+//     return node;
+// })();
